@@ -70,7 +70,8 @@ int main(int argc, char *argv[]) {
     server_addr.sin6_port = htons(24999);
 
     puts("flow label enabled");
-    set_flow_label(sock, &server_addr, 255);
+    int flow_label = 0xff;
+    set_flow_label(sock, &server_addr, flow_label);
     enable_flow_label(sock);
 
     //Connect to remote server
@@ -99,6 +100,8 @@ int main(int argc, char *argv[]) {
 
         puts("server replied:");
         puts(server_reply);
+        set_flow_label(sock, &server_addr, flow_label--);
+        enable_flow_label(sock);
         sleep(2);
     }
 
